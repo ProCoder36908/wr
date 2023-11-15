@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guess the Number Game</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        #game-container {
+            text-align: center;
+        }
+
+        button {
+            font-size: 16px;
+            padding: 10px 20px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="game-container">
+        <h1>Guess the Number Game</h1>
+        <p>Guess a number between 1 and 10:</p>
+        <input type="number" id="user-input" min="1" max="10">
+        <button onclick="checkGuess()">Submit Guess</button>
+        <p id="result"></p>
+    </div>
+
+    <script>
+        let chances = 3;
+        let randomNumber;
+
+        // Start a new game
+        startNewGame();
+
+        // Function to start a new game
+        function startNewGame() {
+            chances = 3;
+            document.getElementById('result').textContent = '';
+            document.getElementById('user-input').value = '';
+            randomNumber = generateRandomNumber();
+        }
+
+        // Function to generate a random number between 1 and 10
+        function generateRandomNumber() {
+            return Math.floor(Math.random() * 10) + 1;
+        }
+
+        // Function to check the user's guess
+        function checkGuess() {
+            const userInput = document.getElementById('user-input').value;
+            const resultElement = document.getElementById('result');
+
+            if (userInput === '') {
+                resultElement.textContent = 'Please enter a number!';
+            } else {
+                const userGuess = parseInt(userInput);
+
+                if (userGuess === randomNumber) {
+                    resultElement.textContent = 'Congratulations! You guessed the correct number!';
+                    startNewGame();
+                } else {
+                    chances--;
+
+                    if (chances > 0) {
+                        const hint = userGuess < randomNumber ? 'higher' : 'lower';
+                        resultElement.textContent = `Wrong guess! The correct number is ${hint}. ${chances} ${chances === 1 ? 'chance' : 'chances'} left.`;
+                    } else {
+                        resultElement.textContent = `Sorry, you're out of chances. The correct number was ${randomNumber}. Play again!`;
+                        startNewGame();
+                    }
+                }
+            }
+        }
+    </script>
+
+</body>
+</html>
